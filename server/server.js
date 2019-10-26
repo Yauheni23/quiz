@@ -2,17 +2,14 @@ const game = require('./mockData');
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
+require('dotenv').config();
 
 app.use(bodyParser.json());
 
 require('./src/router')(app);
 
 app.get('/game', (req, res) => {
-    const resGame = game.sort(function(){
-        return Math.random() - 0.5;
-    }).slice(0, 10);
-
-    res.send({game: resGame});
+    res.send({game});
 });
 
 const server = app.listen(8080, () => {

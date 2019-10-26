@@ -12,6 +12,7 @@ class UserService {
     create(data) {
         return this.userRepository.create({
             name: data.name,
+            result: data.result || 0,
         })
     }
 

@@ -22,7 +22,7 @@ function createUser(request, response) {
             id: user.id,
             name: user.name,
         }))
-        .catch(error => response.status(400).send(error.errors[0]));
+        .catch(error => response.status(400).send(error));
 }
 
 function updateResult(request, response) {
@@ -30,7 +30,7 @@ function updateResult(request, response) {
         result: request.body.result
     }, {
         where: {
-            id: request.body.id
+            id: request.params.id
         }
     })
     .then(user => response.send(user))
