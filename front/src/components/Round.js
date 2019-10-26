@@ -10,7 +10,7 @@ export const Round = ({round, nextRound}) => {
             </View>
             <View style={{position: 'absolute', bottom: 0, left: 0, right: 0}}>
                 <VariantsAnswer
-                    variantAnswers={round.variantAnswers}
+                    variantAnswers={round.variantAnswers.sort(() => Math.random() - 0.5)}
                     answer={round.answer}
                     sendResult={(isRight) => nextRound(isRight)}
                 />

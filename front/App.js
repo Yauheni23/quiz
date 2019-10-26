@@ -9,16 +9,15 @@ export const UserContext = React.createContext('');
 
 export default function App() {
     const [isGame, setGame] = useState(false);
-    const [username, setUserName] = useState('');
+    const [user, setUser] = useState('');
 
     function start(username) {
-        console.log(username);
-        setUserName(username);
+        setUser(username);
         setGame(true);
     }
 
     return (
-        <UserContext.Provider value={username}>
+        <UserContext.Provider value={user}>
             <ImageBackground
                 source={require('./assets/1853cf856c7b98c794eb1d67a75e4120.jpg')}
                 style={{width: '100%', height: '100%'}}
