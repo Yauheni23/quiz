@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon server"
+    "start": "nodemon server",
+    "database": "node src/database/createDatabase.js"
   },
   "keywords": [
     "Nodejs",
@@ -19,8 +20,12 @@
   "license": "ISC",
   "dependencies": {
     "body-parser": "latest",
+    "dotenv": "^8.0.0",
     "express": "^4.16.3",
     "nodemon": "^1.18.10",
-    "sequelize": "^5.21.1"
+    "pg": "^7.12.1",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "5.8.12",
+    "sequelize-cli": "^5.5.1"
   }
 }

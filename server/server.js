@@ -1,10 +1,11 @@
 const game = require('./mockData');
-
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json());
+
+require('./src/router')(app);
 
 app.get('/game', (req, res) => {
     const resGame = game.sort(function(){
@@ -14,7 +15,7 @@ app.get('/game', (req, res) => {
     res.send({game: resGame});
 });
 
-const server = app.listen(8080, function () {
+const server = app.listen(8080, () => {
     let port = server.address().port;
     console.log(`App listening at http://localhost:${port}`)
-})
+});
