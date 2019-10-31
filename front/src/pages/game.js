@@ -1,15 +1,17 @@
 import {View, StyleSheet, ActivityIndicator} from "react-native";
 import {Icon} from 'react-native-elements';
-import React, {useEffect, useState, useMemo} from "react";
+import React, {useEffect, useState, useMemo, useContext} from "react";
 import {Round} from "../components/Round";
 import {ResultPage} from "./result";
 import {gameQuestions} from '../mockData/questions';
 import {GameInfo} from "../components/GameInfo";
 import {serverAddress} from "../constants/server"
+import {CategoryContext} from "../../App";
 
-const countRound = 10;
+let countRound = 10;
 
 export const GamePage = () => {
+    const category = useContext(CategoryContext);
     const [isLoading, setIsLoading] = useState(false);
     const [gameStatus, setGameStatus] = useState({
         countRightAnswers: 0,
@@ -21,9 +23,12 @@ export const GamePage = () => {
     useEffect(() => {
         setIsLoading(true);
 
-        fetch(`${serverAddress}/game`)
+        fetch(`${serverAddress}/game?category=${category}`)
             .then((response) => response.json())
-            .then(data => setGame(data.game.sort(() => Math.random() - 0.5)))
+            .then(data => {
+                setGame(data.game.sort(() => Math.random() - 0.5));
+                countRound = data.game.length;
+            })
             .catch(() => setGame(gameQuestions.sort(() => Math.random() - 0.5)))
             .finally(() => {
                 setIsLoading(false);

@@ -9,7 +9,8 @@ app.use(bodyParser.json());
 require('./src/router')(app);
 
 app.get('/game', (req, res) => {
-    res.send({game});
+    console.log(req.query);
+    res.send({game: game.filter(el => el.category === req.query.category)});
 });
 
 const server = app.listen(8080, () => {

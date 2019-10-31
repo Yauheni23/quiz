@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
 import {Button, StyleSheet, View, TextInput, Text, ToastAndroid} from 'react-native';
 import {colors} from "../constants/colors";
+import RadioForm from 'react-native-simple-radio-button';
 
-export const MainPage = ({startGame}) => {
+export const MainPage = ({startGame, setCategory}) => {
     const [username, setUsername] = useState('');
 
     const validateName = () => {
@@ -17,10 +18,23 @@ export const MainPage = ({startGame}) => {
         }
     };
 
+    const radio_props = [
+        {label: 'Первая', value: 1 },
+        {label: 'Вторая', value: 2 }
+    ];
+
     return (
         <View style={styles.container}>
             <Text style={{textAlign: 'center', marginBottom: 100, fontSize: 50}}>Викторина</Text>
             <View>
+                <View style={{marginBottom: 20}}>
+                    <Text style={{marginBottom: 20, fontSize: 25}}>Категория</Text>
+                    <RadioForm
+                        radio_props={radio_props}
+                        initial={0}
+                        onPress={(value) => {setCategory(value)}}
+                    />
+                </View>
                 <TextInput
                     value={username}
                     onChangeText={(text => setUsername(text))}
