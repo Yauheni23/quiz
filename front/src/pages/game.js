@@ -3,10 +3,10 @@ import {Icon} from 'react-native-elements';
 import React, {useEffect, useState, useMemo, useContext} from "react";
 import {Round} from "../components/Round";
 import {ResultPage} from "./result";
-import {gameQuestions} from '../mockData/questions';
 import {GameInfo} from "../components/GameInfo";
-import {serverAddress} from "../constants/server"
 import {CategoryContext} from "../../App";
+import {QuestionService} from "../services/question.service";
+import {LoadingService} from "../services/loading.service";
 
 let countRound = 10;
 
@@ -21,18 +21,16 @@ export const GamePage = () => {
     const [game, setGame] = useState([]);
 
     useEffect(() => {
-        setIsLoading(true);
+        LoadingService.getInstance().loading.subscribe(loading => {
+            setIsLoading(loading);
+        });
+    }, []);
 
-        fetch(`${serverAddress}/game?category=${category}`)
-            .then((response) => response.json())
-            .then(data => {
-                setGame(data.game.sort(() => Math.random() - 0.5));
-                countRound = data.game.length;
-            })
-            .catch(() => setGame(gameQuestions.sort(() => Math.random() - 0.5)))
-            .finally(() => {
-                setIsLoading(false);
-            })
+    useEffect(() => {
+        QuestionService.getInstance().getQuestions(category).subscribe(questions => {
+            setGame(questions);
+            countRound = questions.length;
+        });
     }, []);
 
     const hitPoints = useMemo(() => new Array(gameStatus.countHeart).fill(0).map((el, index) =>

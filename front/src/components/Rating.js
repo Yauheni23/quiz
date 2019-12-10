@@ -1,7 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {StyleSheet, FlatList, Text, View, ScrollView, RefreshControl} from 'react-native';
+import {UserService} from "../services/user.service";
 
-export const Rating = ({data, onUpdate}) => {
+export const Rating = ({data}) => {
     const [refreshing, setRefreshing] = useState(false);
 
     useEffect(() => {
@@ -10,7 +11,7 @@ export const Rating = ({data, onUpdate}) => {
 
     const updateRating = () => {
         setRefreshing(true);
-        onUpdate()
+        UserService.getInstance().updateUsers();
     };
 
     return (

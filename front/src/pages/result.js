@@ -2,35 +2,24 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ActivityIndicator, Button, StyleSheet, Text, View} from 'react-native';
 import {colors} from '../constants/colors';
 import {UserContext} from '../../App';
-import axios from 'axios';
-import {serverAddress} from '../constants/server';
 import {Rating} from '../components/Rating';
+import {UserService} from "../services/user.service";
 
 export const ResultPage = ({result, restartGame}) => {
     const [results, setResults] = useState([]);
     const user = useContext(UserContext);
 
     useEffect(() => {
-        axios.post(`${serverAddress}/user`, {
+        UserService.getInstance().createUser({
             name: user,
             result: result.countRightAnswers,
-        }).then(() => {
-            return axios.get(`${serverAddress}/user`)
-        }).then((response) => setResults(mapResults(response.data)));
+        })
     }, []);
 
-    function updateResults() {
-        axios.get(`${serverAddress}/user`)
-            .then((response) => setResults(mapResults(response.data)))
-    }
-
-    function mapResults(results) {
-        return results.sort((prev, next) => prev.result < next.result ? 1 : -1)
-            .map((el, index) => ({
-                ...el,
-                place: index + 1,
-            }))
-    }
+    useEffect(() => {
+        UserService.getInstance().users
+            .subscribe(users => setResults(users))
+    }, []);
 
     return (
         <View>
@@ -40,7 +29,7 @@ export const ResultPage = ({result, restartGame}) => {
                     <Text style={styles.result}>{result.countRightAnswers}/{result.countRound}</Text>
                     <Button title='Сыграть ещё раз?' onPress={() => restartGame()} color={colors.default}/>
                     <Text style={{fontSize: 35}}>Результаты:</Text>
-                    <Rating data={results} onUpdate={() => updateResults()}/>
+                    <Rating data={results} />
                 </View>
                 : <View style={styles.loaderContainer}>
                     <ActivityIndicator size="large" color="#0000ff"/>
